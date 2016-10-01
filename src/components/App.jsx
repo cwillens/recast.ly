@@ -10,7 +10,8 @@ class App extends React.Component {
         query: '3-Year-Old Completely Covers Baby Brother with Peanut Butter',
         max: 10
       },
-      changed: true
+      changed: true,
+      autoplay: 0
     };
   }
 
@@ -55,12 +56,18 @@ class App extends React.Component {
     }
   }
 
+  handleAutoplay() {
+    this.setState({
+      autoplay: this.state.autoplay ? 0 : 1
+    });
+  }
+
   render() {
     return (
       <div>
-        <Nav handleSearch = {this.handleSearch.bind(this)} />
+        <Nav handleSearch = {this.handleSearch.bind(this)} handleAutoplay = {this.handleAutoplay.bind(this)}/>
         <div className='col-md-7'>
-          <VideoPlayer video = {this.state.currentVideo}/>
+          <VideoPlayer video = {this.state.currentVideo} autoplay = {this.state.autoplay}/>
         </div>
         <div className='col-md-5'>
           <VideoList videos = {this.state.videoList} handleClick = {this.handleClick.bind(this)} />

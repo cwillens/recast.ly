@@ -3,6 +3,11 @@ var Nav = (props) => (
     <div className="col-md-6 col-md-offset-3">
       <Search handleSearch={props.handleSearch} />
     </div>
+    <div className="col-md-6 col-md-offset-3" >
+      <div className="search-bar form-inline">
+        <button onClick={props.handleAutoplay} className="btn hidden-sm-down">Autoplay</button>
+      </div>
+    </div>
   </nav>
 );
 
