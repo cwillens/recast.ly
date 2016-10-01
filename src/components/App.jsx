@@ -1,11 +1,23 @@
 class App extends React.Component {
   constructor(props) {
     super(props);
-  
+
     this.state = {
-      currentVideo: props.videos ? props.videos[0] : window.exampleVideoData[0],
-      videoList: props.videos || window.exampleVideoData
+      currentVideo: window.exampleVideoData[0] || {},
+      videoList: window.exampleVideoData || []
     };
+  }
+
+  componentDidMount() {
+    var options = { key: window.YOUTUBE_API_KEY, query: 'frog legs', max: 10 };
+    this.props.searchYouTube(options, data => {
+     
+      this.setState({
+        videoList: data,
+        currentVideo: data[0]
+      });
+    
+    });
   }
 
   handleClick(video) {
