@@ -4,20 +4,30 @@ class App extends React.Component {
 
     this.state = {
       currentVideo: window.exampleVideoData[0] || {},
-      videoList: window.exampleVideoData || []
+      videoList: window.exampleVideoData || [],
+      options: {
+        key: window.YOUTUBE_API_KEY,
+        query: '',
+        max: 10
+      },
+      changed: true
     };
   }
 
   componentDidMount() {
-    var options = { key: window.YOUTUBE_API_KEY, query: 'frog legs', max: 10 };
-    this.props.searchYouTube(options, data => {
-     
-      this.setState({
-        videoList: data,
-        currentVideo: data[0]
-      });
-    
-    });
+    window.setInterval(() => {
+      if (this.state.changed) {
+        this.setState({
+          changed: false
+        });
+        this.props.searchYouTube(this.state.options, data => {   
+          this.setState({
+            videoList: data,
+            currentVideo: data[0]
+          });
+        });
+      }
+    }, 500);
   }
 
   handleClick(video) {
@@ -26,14 +36,27 @@ class App extends React.Component {
     });
   }
 
+  handleSearch(input) {
+    if (input !== undefined) {
+      this.setState({
+        changed: true,
+        options: { 
+          key: window.YOUTUBE_API_KEY,
+          query: input,
+          max: 10
+        }
+      });
+    }
+  }
+
   render() {
     return (
       <div>
-        <Nav />
-        <div className="col-md-7">
+        <Nav handleSearch = {this.handleSearch.bind(this)} />
+        <div className='col-md-7'>
           <VideoPlayer video = {this.state.currentVideo}/>
         </div>
-        <div className="col-md-5">
+        <div className='col-md-5'>
           <VideoList videos = {this.state.videoList} handleClick = {this.handleClick.bind(this)} />
         </div>
       </div>
