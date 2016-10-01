@@ -3,11 +3,11 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      currentVideo: window.exampleVideoData[0] || {},
-      videoList: window.exampleVideoData || [],
+      currentVideo: {},
+      videoList: [],
       options: {
         key: window.YOUTUBE_API_KEY,
-        query: '',
+        query: '3-Year-Old Completely Covers Baby Brother with Peanut Butter',
         max: 10
       },
       changed: true
@@ -15,6 +15,12 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+    this.props.searchYouTube(this.state.options, data => {   
+      this.setState({
+        videoList: data,
+        currentVideo: data[0]
+      });
+    });
     window.setInterval(() => {
       if (this.state.changed) {
         this.setState({
