@@ -5,11 +5,13 @@ class App extends React.Component {
     this.state = {
       currentVideo: {},
       videoList: [],
+      commentsList: [],
       options: {
         key: window.YOUTUBE_API_KEY,
         query: '3-Year-Old Completely Covers Baby Brother with Peanut Butter',
         max: 10
       },
+      currentVideoId: '',
       changed: true,
       autoplay: 0
     };
@@ -19,7 +21,13 @@ class App extends React.Component {
     this.props.searchYouTube(this.state.options, data => {   
       this.setState({
         videoList: data,
-        currentVideo: data[0]
+        currentVideo: data[0],
+        currentVideoId: data[0].id.videoId
+      });
+    });
+    this.props.searchYouTubeComments(this.state.options, this.state.currentVideoId, data => {   
+      this.setState({
+        commentsList: data
       });
     });
     window.setInterval(() => {
@@ -30,7 +38,8 @@ class App extends React.Component {
         this.props.searchYouTube(this.state.options, data => {   
           this.setState({
             videoList: data,
-            currentVideo: data[0]
+            currentVideo: data[0],
+            currentVideoId: data[0].id.videoId
           });
         });
       }
@@ -39,7 +48,8 @@ class App extends React.Component {
 
   handleClick(video) {
     this.setState({
-      currentVideo: video
+      currentVideo: video,
+      currentVideoId: video.id.videoId
     });
   }
 
@@ -68,6 +78,7 @@ class App extends React.Component {
         <Nav handleSearch = {this.handleSearch.bind(this)} handleAutoplay = {this.handleAutoplay.bind(this)}/>
         <div className='col-md-7'>
           <VideoPlayer video = {this.state.currentVideo} autoplay = {this.state.autoplay}/>
+          <CommentsList comments = {this.state.commentsList} />
         </div>
         <div className='col-md-5'>
           <VideoList videos = {this.state.videoList} handleClick = {this.handleClick.bind(this)} />

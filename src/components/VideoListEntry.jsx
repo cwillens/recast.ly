@@ -1,4 +1,3 @@
-
 var VideoListEntry = (props) => {
   if (props.video.id !== undefined) {
     return (
